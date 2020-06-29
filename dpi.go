@@ -36,6 +36,16 @@ func (ew *noErrWriter) Write(b []byte) (int, error) {
 	return n, nil
 }
 
+// ErrorOf returns the error, if any, of the writer passed to a Handler
+// If the writer is not the one passed to the Handler, nil is returned
+func ErrorOf(w io.Writer) error {
+	if errw, ok := w.(*noErrWriter); ok {
+		return errw.err
+	}
+
+	return nil
+}
+
 func init() {
 	usr, err := user.Current()
 	if err != nil {
